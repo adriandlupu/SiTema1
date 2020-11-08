@@ -13,20 +13,30 @@ def generateAesKey():
 
 
 def encryptMessage(message, aes_key, mode=AES.MODE_ECB):
+    if mode ==AES.MODE_CFB:
+        return encryptMessageCFB(message, aes_key)
     cipher_aes = AES.new(aes_key, mode)
     ciphertext = cipher_aes.encrypt(pad(message, 16))
     return ciphertext
 
 
+def encryptMessageCFB(message, aes_key):
+    cipher_aes = AES.new(aes_key, AES.MODE_CFB,aes_key)
+    ciphertext = cipher_aes.encrypt(message)
+    return ciphertext
+
+
 def decryptMessage(message, aes_key, mode=AES.MODE_ECB):
+    if mode ==AES.MODE_CFB:
+        return decryptMessageCFB(message, aes_key)
     cipher_aes = AES.new(aes_key, mode)
-    data = cipher_aes.decrypt(message)
+    data = unpad(cipher_aes.decrypt(message), 16)
     return data
 
 
-def decryptMessagek3(message, aes_key, mode=AES.MODE_ECB):
-    cipher_aes = AES.new(aes_key, mode)
-    data = unpad(cipher_aes.decrypt(message), 16)
+def decryptMessageCFB(message, aes_key):
+    cipher_aes = AES.new(aes_key, AES.MODE_CFB,aes_key)
+    data = cipher_aes.decrypt(message)
     return data
 
 
@@ -40,5 +50,4 @@ def read_k3():
 
 
 def get_mode():
-    return "ECB" if random.randint(0, 1) else "CFB"
-
+    return "ECB"   if random.randint(0, 1) else "CFB"

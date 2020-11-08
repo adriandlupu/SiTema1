@@ -1,5 +1,5 @@
 import socket
-from crypto_utils import generateAesKey, encryptMessage, decryptMessage, k3_file, read_k3, decryptMessagek3
+from crypto_utils import *
 import random
 HOST = '127.0.0.1'
 PORT = 65477
@@ -14,6 +14,7 @@ def generate_k3():
     file_out = open(k3_file, "wb")
     file_out.write(k3)
     file_out.close()
+    print(k3)
 
 
 def generate_k1():
@@ -44,6 +45,7 @@ if __name__ == '__main__':
             s.listen()
             print("Waiting for connection...")
             conn, _ = s.accept()
-            mod = decryptMessagek3(conn.recv(2048), k3)
+            mod = decryptMessage(conn.recv(2048), k3)
             the_key = get_key(str(mod))
             conn.send(encryptMessage(the_key, k3))
+            print(( the_key))

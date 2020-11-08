@@ -13,7 +13,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     k3 = read_k3()
     s.send(encryptMessage(bytearray(mod_criptare, "utf-8"), k3))
     message = s.recv(2048)
-    cheie = decryptMessagek3(message, k3)
+    cheie = decryptMessage(message, k3)
     print(cheie)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
